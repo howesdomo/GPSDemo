@@ -29,22 +29,12 @@
     </style>
 	<title>地址解析</title>
 	<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=pH7HBgc9s3FULt3A8tlTIsASsQKt8wzk"></script>
+	<!-- <script type="text/javascript" src="https://api.map.baidu.com/api?v=1.0&type=webgl&ak=pH7HBgc9s3FULt3A8tlTIsASsQKt8wzk"></script> -->
 </head>
 <body>
-    <div id="allmap">
-    </div>
-	
+	<div id="allmap">
+	</div>
 	<script type="text/javascript">
-		var query = decodeURI(window.location.search.substring(1));
-		var arr = query.split("&");
-		var lng = arr[0].substring(4);
-		var lat = arr[1].substring(4);
-		var address = arr[2].substring(8);
-		console.log(query);
-		console.log(lng);
-		console.log(lat);
-		console.log(address);
-		
 		var map = new BMap.Map("allmap");
 		// ******** 添加导航栏 ********
 		// 添加带有定位的导航控件
@@ -57,18 +47,32 @@
 			enableGeolocation: true
 		});
 		map.addControl(navigationControl);
-		
-		var point = new BMap.Point(lng, lat);
-		var myZoomLevel = 18;
-		
-		geoPoint = point;
-		map.centerAndZoom(geoPoint, myZoomLevel);
-		
-		var diyMarker = new BMap.Marker(point);
-		diyMarker.setTitle(address);
-		var label = new BMap.Label(address, { offset: new BMap.Size(20, -10) });
-		diyMarker.setLabel(label);
-		map.addOverlay(diyMarker);
+
+		var source = window.location.search.substring(1);
+		if(source != '')
+		{
+			var query = decodeURI(source);
+			var arr = query.split("&");
+			var lng = arr[0].substring(4);
+			var lat = arr[1].substring(4);
+			var address = arr[2].substring(8);
+			
+			console.log(query);
+			console.log(lng);
+			console.log(lat);
+			console.log(address);
+			
+			var point = new BMap.Point(lng, lat);
+			var myZoomLevel = 18;
+			
+			map.centerAndZoom(point, myZoomLevel);
+			
+			var diyMarker = new BMap.Marker(point);
+			diyMarker.setTitle(address);
+			var label = new BMap.Label(address, { offset: new BMap.Size(20, -10) });
+			diyMarker.setLabel(label);
+			map.addOverlay(diyMarker);
+		}
 	</script>
 </body>
 </html>
