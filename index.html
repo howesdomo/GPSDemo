@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <style type="text/css">
+        html {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            font-family: "微软雅黑";
+        }
+
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            font-family: "微软雅黑";
+        }
+
+        #allmap {
+            height: 100%;
+            width: 100%;
+        }
+
+        #r-result {
+            width: 100%;
+        }
+    </style>
+	<title>地址解析</title>
+	<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=pH7HBgc9s3FULt3A8tlTIsASsQKt8wzk"></script>
+</head>
+<body>
+    <div id="allmap">
+    </div>
+	
+	<script type="text/javascript">
+		var query = decodeURI(window.location.search.substring(1));
+		var arr = query.split("&");
+		var lng = arr[0].substring(4);
+		var lat = arr[1].substring(4);
+		var address = arr[2].substring(8);
+		console.log(query);
+		console.log(lng);
+		console.log(lat);
+		console.log(address);
+		
+		var map = new BMap.Map("allmap");
+		// ******** 添加导航栏 ********
+		// 添加带有定位的导航控件
+		var navigationControl = new BMap.NavigationControl({
+			// 靠左上角位置
+			anchor: BMAP_ANCHOR_TOP_RIGHT,
+			// LARGE类型
+			type: BMAP_NAVIGATION_CONTROL_LARGE,
+			// 启用显示定位
+			enableGeolocation: true
+		});
+		map.addControl(navigationControl);
+		
+		var point = new BMap.Point(lng, lat);
+		var myZoomLevel = 18;
+		
+		geoPoint = point;
+		map.centerAndZoom(geoPoint, myZoomLevel);
+		
+		var diyMarker = new BMap.Marker(point);
+		diyMarker.setTitle(address);
+		var label = new BMap.Label(address, { offset: new BMap.Size(20, -10) });
+		diyMarker.setLabel(label);
+		map.addOverlay(diyMarker);
+	</script>
+</body>
+</html>
